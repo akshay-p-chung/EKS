@@ -65,8 +65,8 @@ pipeline {
 					script{
 						dir('Terraform'){
 							sh """
-								echo "terraform $ACTION-var-file=${tfvars} --auto-approve"
-								terraform $ACTION-var-file=${tfvars} --auto-approve
+								echo "terraform $ACTION -var-file=${tfvars} --auto-approve"
+								terraform $ACTION -var-file=${tfvars} --auto-approve
 						}
 					}
 				}
