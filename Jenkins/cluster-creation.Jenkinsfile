@@ -53,6 +53,7 @@ pipeline {
 							sh """
 								echo "terraform plan -var-file=${tfvars}"
 								terraform plan -var-file=${tfvars}
+							"""
 						}
 						input(message: "Approve?", ok: "proceed")
 					}
@@ -67,6 +68,7 @@ pipeline {
 							sh """
 								echo "terraform ${ACTION} -var-file=${tfvars} --auto-approve"
 								terraform ${ACTION} -var-file=${tfvars} --auto-approve
+							"""
 						}
 					}
 				}
