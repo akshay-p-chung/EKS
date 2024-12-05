@@ -1,0 +1,37 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"eks:*"
+			],
+			"Resource": [
+				"*"
+			]
+		},
+		{
+			Effect: "Allow",
+			"Action":[
+				"iam:*"
+			],
+			"Resource": [
+				"arn:aws:iam::943535361612:role/Jenkins-iam-role",
+				"arn:aws:iam::943535361612:role/-eks-node-group-",
+				"arn:aws:iam::943535361612:role/kaas-ms-eks-*",
+				"arn:aws:iam::943535361612:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/*",
+				"arn:aws:iam::943535361612:policy/*",
+				"arn:aws:iam::943535361612:role/aws-service-role/eks-nodegroup.amazonaws.com /AWSServiceRoleForAmazonEKSNodegroup"
+			]
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"kms:*"
+			],
+			"Resource": [
+				"*"
+			]
+		}
+	]
+}
