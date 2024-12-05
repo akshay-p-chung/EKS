@@ -1,5 +1,5 @@
-bucket = "terraform-kaas-state-files-us-east-1"
+bucket = "eks-state-files-us-east-2"
 
-key    = "terraform-eks/kaas-ms-eks-itg.tfstate"
+key    = "terraform-eks/eks-dev.tfstate"
 
-region = "us-east-1"
+region = "us-east-2"
