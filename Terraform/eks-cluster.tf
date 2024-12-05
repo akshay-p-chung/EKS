@@ -21,9 +21,10 @@ module "eks" {
 		instance_types = var.instance_types
 		create_node_security_group = false
 			iam_role_additional_policies = {
-				Amazon S3FullAccess "arn:aws:iam::aws:policy/Amazon53FullAccess",
-				AutoScalingFullAccess "arn:aws:iam::aws:policy/AutoScalingFullAccess",
-				SecretsManagerReadWrite = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+				AmazonS3FullAccess = "arn:aws:iam::aws:policy/Amazon53FullAccess",
+				AutoScalingFullAccess = "arn:aws:iam::aws:policy/AutoScalingFullAccess",
+				SecretsManagerReadWrite = "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
+				CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 			}
 	}
 
