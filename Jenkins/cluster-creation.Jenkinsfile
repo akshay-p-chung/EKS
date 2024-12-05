@@ -38,7 +38,7 @@ pipeline {
 						dir('Terraform'){
 							sh """
 								echo "terraform init -var-file-${tfvars} -backend-config=${BACKEND}"
-								terraform init reconfigure -var-file=${tfvars} -backend-config=${BACKEND}
+								terraform init -reconfigure -var-file=${tfvars} -backend-config=${BACKEND}
 							"""
 						}
 					}
