@@ -1,9 +1,8 @@
 pipeline {
 	agent any
 	parameters {
-		choice(name: 'ENV', choices: ['dev', 'itg'], description: 'Environment of the cluster')
-		choice(name: 'tfvars', choices: ['values/kaas-ms-eks-dev.tfvars', 'values/kaas-ms-eks-itg.tfvars'], description: 'tfvars file for the cluster')
-		choice(name: 'BACKEND', choices: ['backend/backend-dev.hcl', 'backend/backend-itg.hcl'], description: 'backend hcl file for the cluster')
+		choice(name: 'tfvars', choices: ['values/eks-dev.tfvars', 'values/eks-pre-prod.tfvars', 'values/eks-prod.tfvars'], description: 'tfvars file for the cluster')
+		choice(name: 'BACKEND', choices: ['backend/backend-dev.hcl', 'backend/backend-pre-prod.hcl', 'backend/backend-prod.hcl'], description: 'backend hcl file for the cluster')
 		choice(name: 'BRANCH', choices: ['main'], description: 'branch to clone the terraform module')
 		choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Action to be taken')
 	}
