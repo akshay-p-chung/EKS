@@ -32,7 +32,7 @@ pipeline {
 				}
 			}
 		}
-		stage("Terraform init'){
+		stage('Terraform init'){
 			steps{
 				dir("$env.C_DIR") {
 					script{	
