@@ -7,7 +7,7 @@ module "eks" {
 	cluster_version = var.kubernetes_version
 
 	iam_role_additional_policies = {
-		ElasticLoadBalancingFullAccess = "arniaws:iam::aws:policy/ElasticLoad BalancingFullAccess"
+		ElasticLoadBalancingFullAccess = "arniaws:iam::aws:policy/ElasticLoadBalancingFullAccess"
 	}
 	
 	vpc_id = var.vpc_id
