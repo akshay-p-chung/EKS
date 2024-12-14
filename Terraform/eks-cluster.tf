@@ -50,7 +50,7 @@ module "eks" {
 			}
 		}
 		jenkins_server = {
-			principal_arn = "arn:aws:iam::058264456163:instance-profile/Jenkins-IAM-Role"
+			principal_arn = "arn:aws:iam::058264456163:role/Jenkins-IAM-Role"
 			policy_associations = {
 				ex = {
 					policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
