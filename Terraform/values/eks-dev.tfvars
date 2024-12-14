@@ -1,7 +1,7 @@
 vpc_id="vpc-08d07213d93086532"
 
 #subnet with more available addresses
-private_subnets = ["subnet-0f1aabc0a2d82ef21", "subnet-0829206e90bc1e047", "subnet-0ac90f3143a895a56"]
+private_subnets = ["subnet-0f567cb1e05df30b9", "subnet-0f0db2303134914a7", "subnet-0d555ca56e92a2017", "subnet-0e9647ffbec785b26", "subnet-0559e8dde2ff21267", "subnet-028025019e0c74f4b"]
 
 cluster_name = "eks-dev"
 
