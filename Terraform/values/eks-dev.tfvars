@@ -7,6 +7,6 @@ cluster_name = "eks-dev"
 
 kubernetes_version = "1.30"
 
-ami_type = "AL2023_ARM_64_STANDARD"
+ami_type = "AL2023_X86_64_STANDARD"
 
 instance_types = ["t2.micro"]
