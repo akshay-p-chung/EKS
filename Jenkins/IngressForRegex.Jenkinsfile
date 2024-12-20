@@ -88,13 +88,12 @@ pipeline {
 				dir("${env.C_DIR}") {
 					script{
 						sh"""
+							sed -i "s/000000000000/${AWS_ACNT_ID}/g; s/EKS_NAME/${EKS_NAME}/g" Installations/sa-for-alb.yaml
 							helm repo add eks https://aws.github.io/eks-charts 
 							helm repo update eks
-							helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+							helm install aws-load-balancer-controller eks/aws-load-balancer-controller -f Installations/sa-for-alb.yaml \
 							  -n kube-system \
-							  --set serviceAccount.create=true \
-							  --set serviceAccount.name=aws-load-balancer-controller \
-							  --set serviceAccount.annotations."eks.amazonaws.com/role-arn"="arn:aws:iam::058264456163:role/eks-dev-AWSLoadBalancerControllerRole" \
+							  --set serviceAccount.create=false \
 							  --set clusterName=${EKS_name}
 						"""	  
 					}
