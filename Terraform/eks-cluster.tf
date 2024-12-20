@@ -37,6 +37,18 @@ module "eks" {
 			}
 	}
 
+  # Security group rules for EKS
+  eks_security_group_rules = [
+    {
+      type        = "Ingress"
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"] # Replace this with specific IP/range for better security
+      description = "Allow HTTPS traffic"
+    }
+  ]
+
 	access_entries = {
 		ex_single = {
 			principal_arn = "arn:aws:iam::058264456163:root"
