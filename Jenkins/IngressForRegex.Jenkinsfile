@@ -94,7 +94,7 @@ pipeline {
 							  -n kube-system \
 							  --set serviceAccount.create=true \
 							  --set serviceAccount.name=aws-load-balancer-controller \
-							  --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"="arn:aws:iam::${AWS_ACNT_ID}:role/${EKS_NAME}-AWSLoadBalancerControllerRole" \
+							  --set serviceAccount.annotations."eks.amazonaws.com/role-arn"="arn:aws:iam::058264456163:role/eks-dev-AWSLoadBalancerControllerRole" \
 							  --set clusterName=${EKS_name}
 						"""	  
 					}
