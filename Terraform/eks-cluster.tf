@@ -35,7 +35,9 @@ module "eks" {
 			AmazonS3FullAccess = "arn:aws:iam::aws:policy/AmazonS3FullAccess",
 			AutoScalingFullAccess = "arn:aws:iam::aws:policy/AutoScalingFullAccess",
 			SecretsManagerReadWrite = "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-			CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+			CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
+			EKSCustomPolicyForSecurityGroups = "arn:aws:iam::058264456163:policy/EKSCustomPolicyForSecurityGroups",
+			AWSLoadBalancerControllerPolicy = "arn:aws:iam::058264456163:policy/AWSLoadBalancerControllerPolicy"
 		}
 	}
 
