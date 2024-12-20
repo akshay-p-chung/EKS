@@ -16,6 +16,17 @@ module "eks" {
 	enable_irsa = true
 	cluster_endpoint_public_access = true
 
+  # Add additional security group rules for the EKS cluster
+  eks_cluster_security_group_additional_rules = [
+    {
+      description = "Allow inbound HTTPS traffic from all IPs"
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+
 	eks_managed_node_group_defaults = {
 		ami_type       = var.ami_type
 		instance_types = var.instance_types
@@ -36,18 +47,6 @@ module "eks" {
 			desired_size = 2
 			}
 	}
-
-  # Security group rules for EKS
-  eks_security_group_rules = [
-    {
-      type        = "Ingress"
-      from_port   = 443
-      to_port     = 443
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"] # Replace this with specific IP/range for better security
-      description = "Allow HTTPS traffic"
-    }
-  ]
 
 	access_entries = {
 		ex_single = {
