@@ -75,7 +75,7 @@ pipeline {
 						sh"""
 							echo "OIDC_ID: ${params.OIDC_ID}"
 							echo "AWS_ACNT_ID: ${params.AWS_ACNT_ID}"
-							sed -i "s/XXXXXXXXXXXXXXXXXXXXXXXXX/${OIDC_ID}/g; s/000000000000/${AWS_ACNT_ID}/g" policies/AWSEKSLoadBalancerControllerRole-trust-policy.json
+							sed -i "s/XXXXXXXXXXXXXXXXXXXXXXXXX/${OIDC_ID}/g; s/000000000000/${AWS_ACNT_ID}/g" Policy/AWSEKSLoadBalancerControllerRole-trust-policy.json
 							aws iam create-role --role-name ${ROLE_NAME} --assume-role-policy-document file://Policy/AWSEKSLoadBalancerControllerRole-trust-policy.json
 							aws iam attach-role-policy-policy-arn ${POLICY_ARN} --role-name ${ROLE_NAME}
 						"""
