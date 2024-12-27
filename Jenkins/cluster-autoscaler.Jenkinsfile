@@ -4,7 +4,7 @@ pipeline {
 		choice(name: 'AWS_ACNT_ID', choices: ['943535361612'], description: 'Enter required AllS Account number here')
 		string(name: 'BRANCH', defaultValue: '')
 		string(name: 'EKS_NAME', defaultValue: '', description: 'EKS cluster name')
-		string(name: 'OIDC_ID', defaultValue:", description: 'EKS OIDC ID')
+		string(name: 'OIDC_ID', defaultValue: '', description: 'EKS OIDC ID')
 	}
 	environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
