@@ -1,9 +1,9 @@
 pipeline {
 	agent any
 	parameters {
-		choice(name: 'AWS_ACNT_ID', choices: ['943535361612'], description: 'Enter required AllS Account number here')
-		string(name: 'BRANCH', defaultValue: '')
-		string(name: 'EKS_NAME', defaultValue: '', description: 'EKS cluster name')
+		choice(name: 'AWS_ACNT_ID', choices: ['058264456163'], description: 'Enter required AllS Account number here')
+		choice(name: 'BRANCH', choices: ['main'], description: 'Branch Name')
+		choice(name: 'EKS_NAME', choices: ['eks-dev', 'eks-pre-prod', 'eks-prod'], description: 'EKS Cluster Name')
 		string(name: 'OIDC_ID', defaultValue: '', description: 'EKS OIDC ID')
 	}
 	environment {
