@@ -88,7 +88,7 @@ pipeline {
 					script {
 						sh"""
 							# Update the manifest file and apply it
-							sed -i 's/<YOUR CLUSTER NAME>/${EKS_NAME}/g' cluster-autoscaler-autodiscover.yaml
+							sed -i 's/<YOUR CLUSTER NAME>/${EKS_NAME}/g' Installations/cluster-autoscaler-autodiscover.yaml
 							kubectl apply -f cluster-autoscaler-deploy.yaml
 						
 							# Update service account with the IAM role
