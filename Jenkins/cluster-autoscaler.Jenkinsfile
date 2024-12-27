@@ -10,7 +10,9 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = 'us-east-2'
-		ROLE_NAME = "${params.EKS_NAME}-cluster-autoscaler-role"
+	ROLE_NAME = "${params.EKS_NAME}-cluster-autoscaler-role"
+	POLICY_NAME="AmazonEKSClusterAutoscalerPolicy"
+	POLICY_ARN="arn:aws:iam::${AWS_ACNT_ID}:policy/${POLICY_NAME}"
 	}
 	stages{
 		stage('Cleaning Workspace') {
@@ -50,8 +52,6 @@ pipeline {
 							echo "AWS_ACNT_ID: ${params.AWS_ACNT_ID}"
 
 							# Check if policy exists, create it if not
-							POLICY_NAME="AmazonEKSClusterAutoscalerPolicy"
-							POLICY_ARN="arn:aws:iam::${AWS_ACNT_ID}:policy/${POLICY_NAME}"
 							if ! aws iam get-policy --policy-arn ${POLICY_ARN} >/dev/null 2>&1; then
 							aws iam create-policy \
 								--policy-name ${POLICY_NAME} \
