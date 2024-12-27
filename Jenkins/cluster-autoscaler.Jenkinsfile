@@ -89,7 +89,7 @@ pipeline {
 						sh"""
 							# Update the manifest file and apply it
 							sed -i 's/<YOUR CLUSTER NAME>/${EKS_NAME}/g' Installations/cluster-autoscaler-autodiscover.yaml
-							kubectl apply -f cluster-autoscaler-deploy.yaml
+							kubectl apply -f Installations/cluster-autoscaler-autodiscover.yaml
 						
 							# Update service account with the IAM role
 							kubectl annotate serviceaccount cluster-autoscaler eks.amazonaws.com/role-arn=arn:aws:iam::${AWS_ACNT_ID}:role/${ROLE_NAME} --namespace kube-system
