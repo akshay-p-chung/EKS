@@ -12,7 +12,8 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = 'us-east-2'
 		ROLE_NAME = "${params.EKS_NAME}-AmazonEKSLoadBalancerControllerRole"
-		POLICY_ARN = "arn:aws:iam::${params.AWS_ACNT_ID}:policy/AWSLoadBalancerControllerIAMPolicy"
+		POLICY_NAME="AWSLoadBalancerControllerIAMPolicy"
+		POLICY_ARN="arn:aws:iam::${AWS_ACNT_ID}:policy/${POLICY_NAME}"
 	}
 	
 	stages{
@@ -44,25 +45,40 @@ pipeline {
 				}
 			}
 		}
-		stage('Create namespace ingress-nginx'){
-			steps{
+		stage('Create Namespace ingress-nginx') {
+			steps {
 				dir("${env.C_DIR}") {
-					script{
-						sh"""
-							kubectl create namespace ingress-nginx
+					script {
+						sh """
+							echo "Checking if namespace 'ingress-nginx' exists..."
+
+							# Check and create namespace if it doesn't exist
+							if ! kubectl get namespace ingress-nginx >/dev/null 2>&1;
+							then
+								kubectl create namespace ingress-nginx
+							else
+								echo "Namespace 'ingress-nginx' already exists."
+							fi
 						"""
 					}
 				}
 			}
 		}
-		stage('Install nginx ingress controller'){
-			steps{
+		stage('Install nginx ingress controller') {
+			steps {
 				dir("${env.C_DIR}") {
 					script {
-						sh"""
-							helm pull oci://ghcr.io/nginxinc/charts/nginx-ingress --version 1.4.1 --untar
-							cd nginx-ingress
-							helm install nginx-ingress . -n ingress-nginx --set controller.service.type=ClusterIP
+						sh """
+							# Check if the Helm release exists
+							if ! helm status nginx-ingress -n ingress-nginx >/dev/null 2>&1; 
+							then
+								echo "Helm release 'nginx-ingress' does not exist. Installing it now..."
+								helm pull oci://ghcr.io/nginxinc/charts/nginx-ingress --version 1.4.1 --untar
+								cd nginx-ingress
+								helm install nginx-ingress . -n ingress-nginx --set controller.service.type=ClusterIP
+							else
+								echo "Helm release 'nginx-ingress' already exists. Skipping installation."
+							fi
 						"""
 					}
 				}
@@ -75,27 +91,64 @@ pipeline {
 						sh"""
 							echo "OIDC_ID: ${params.OIDC_ID}"
 							echo "AWS_ACNT_ID: ${params.AWS_ACNT_ID}"
+							
+							# Check if policy exists, create it if not
+
+							if ! aws iam get-policy --policy-arn ${POLICY_ARN} >/dev/null 2>&1; then
+							aws iam create-policy \
+								--policy-name ${POLICY_NAME} \
+								--policy-document file://Policy/AWSLoadBalancerControllerIAMPolicy.json
+							else
+								echo "Policy ${POLICY_NAME} already exists"
+							fi
+							
+							# Update the trust policy file with OIDC and Account ID
 							sed -i "s/XXXXXXXXXXXXXXXXXXXXXXXXX/${OIDC_ID}/g; s/000000000000/${AWS_ACNT_ID}/g" Policy/AWSEKSLoadBalancerControllerRole-trust-policy.json
-							aws iam create-role --role-name ${ROLE_NAME} --assume-role-policy-document file://Policy/AWSEKSLoadBalancerControllerRole-trust-policy.json
-							aws iam attach-role-policy --policy-arn ${POLICY_ARN} --role-name ${ROLE_NAME}
+							
+							# Check if role exists, create it if not
+							if ! aws iam get-role --role-name ${ROLE_NAME} >/dev/null 2>&1; then
+								aws iam create-role \
+									--role-name ${ROLE_NAME} \
+									--assume-role-policy-document file://Policy/AWSEKSLoadBalancerControllerRole-trust-policy.json
+                        
+							# Attach the policy to the role
+								aws iam attach-role-policy \
+									--policy-arn ${POLICY_ARN} \
+									--role-name ${ROLE_NAME}
+							else
+								echo "Role ${ROLE_NAME} already exists"
+							fi
 						"""
 					}
 				}
 			}
 		}
-		stage('Deploying AWS LB Controller'){
-			steps{
+		stage('Deploying AWS LB Controller') {
+			steps {
 				dir("${env.C_DIR}") {
-					script{
-						sh"""
-							sed -i "s/000000000000/${AWS_ACNT_ID}/g; s/EKS_NAME/${EKS_NAME}/g" Installations/sa-for-alb.yaml
-							helm repo add eks https://aws.github.io/eks-charts 
-							helm repo update eks
-							helm install aws-load-balancer-controller eks/aws-load-balancer-controller -f Installations/sa-for-alb.yaml \
-							  -n kube-system \
-							  --set serviceAccount.create=false \
-							  --set clusterName=${EKS_name}
-						"""	  
+					script {
+						sh """
+
+							# Check if the Helm release exists
+							if ! helm status aws-load-balancer-controller -n kube-system >/dev/null 2>&1; 
+							then
+
+								# Update the service account YAML with account ID and cluster name
+								sed -i "s/000000000000/${AWS_ACNT_ID}/g; s/EKS_NAME/${EKS_NAME}/g" Installations/sa-for-alb.yaml
+                        
+								# Add and update the Helm repo
+								helm repo add eks https://aws.github.io/eks-charts
+								helm repo update eks
+                        
+								# Deploy the AWS Load Balancer Controller
+								helm install aws-load-balancer-controller eks/aws-load-balancer-controller -f Installations/sa-for-alb.yaml \
+								  -n kube-system \
+								  --set serviceAccount.create=false \
+								  --set clusterName=${EKS_NAME}
+							else
+								echo "Helm release 'aws-load-balancer-controller' already exists in namespace 'kube-system'."
+							fi
+						"""
 					}
 				}
 			}
