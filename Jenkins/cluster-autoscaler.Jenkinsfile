@@ -84,7 +84,7 @@ pipeline {
 
 		stage('Deploy Cluster Autoscaler'){
 			steps{
-				dir("${env.C_DIR}/Installations/"){
+				dir("${env.C_DIR}"){
 					script {
 						sh"""
 							# Update the manifest file and apply it
