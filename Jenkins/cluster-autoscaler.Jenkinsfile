@@ -11,7 +11,6 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = 'us-east-2'
 		ROLE_NAME = "${params.EKS_NAME}-cluster-autoscaler-role"
-		POLICY_ARN = "arn:aws:iam::${params.AWS_ACNT_ID}:policy/AmazonEKSClusterAutoscalerPolicy"
 	}
 	stages{
 		stage('Cleaning Workspace') {
