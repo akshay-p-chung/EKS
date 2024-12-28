@@ -2,6 +2,7 @@ pipeline {
 	agent any
 	parameters {
 		choice(name: 'AWS_ACNT_ID', choices: ['058264456163'], description: 'Enter required AWS Account number here')
+		choice(name: 'BRANCH', choices: ['main'], description: 'Branch Name')
 		choice(name: 'EKS_NAME', choices: ['eks-dev', 'eks-pre-prod', 'eks-prod'], description: 'EKS Cluster Name')
 	}
 	environment {
