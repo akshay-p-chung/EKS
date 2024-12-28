@@ -9,4 +9,4 @@ kubernetes_version = "1.30"
 
 ami_type = "AL2023_x86_64_STANDARD"
 
-instance_types = ["t2.micro"]
+instance_types = ["t2.small"]
