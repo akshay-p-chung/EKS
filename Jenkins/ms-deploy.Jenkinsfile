@@ -66,7 +66,7 @@ pipeline {
 							fi
                     
 							for i in \$(echo ${ServiceName} | tr ',' ' '); do
-								helm upgrade --install $i helm-config/$i \
+								helm upgrade --install \$i helm-config/\$i \
 									--set image.repository=\${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/project/\$i \
 									--set image.tag=\${BUILD_TAG} \
 									-f helm-config/values.yaml
@@ -81,18 +81,18 @@ pipeline {
 		always {
 			dir("${env.C_DIR}") {
 				script {
-					echo "$docker_img_created"
+					echo "\$docker_img_created"
 						if (docker_img_created == 'true') {
 							sh"""
 							ls -ltr
-								if [ $ServiceName == "All" ]
+								if [ \$ServiceName == "All" ]
 								then
 										ServiceName="sample-app,service-one,service-two"
 								fi
-								for i in $ServiceName
+								for i in \$ServiceName
 								do
-									docker rmi ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/kaas-dev/${BUILD_TAG}
-									docker rmi $i:latest
+									docker rmi \${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/kaas-dev/\${BUILD_TAG}
+									docker rmi \$i:latest
 								done
 							"""
 						}
