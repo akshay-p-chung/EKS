@@ -45,9 +45,9 @@ pipeline {
 							for $i in ${ServiceName}
 							do
 								aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com
-								docker build -t $i $i/
-								docker tag $i:latest ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com
-								docker push ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/kaas-dev/$i:${BUILD_TAG}
+								docker build -t ${ServiceName} ${ServiceName}/
+								docker tag ${ServiceName}:latest ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+								docker push ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/kaas-dev/${ServiceName}:${BUILD_TAG}
 							done
 						"""
 						env.docker_img_created = true
