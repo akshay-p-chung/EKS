@@ -2,7 +2,7 @@ pipeline {
 	agent any
 	parameters {
 		choice (name: 'AWS_ACNT_ID', choices: ['058264456163'], description: 'Enter required AWS Account number here')
-		choice (name: 'ServiceBranch', choices: ['main'], description: )
+		choice (name: 'ServiceBranch', choices: ['main'], description: '')
 		extendedChoice(description:'', multiSelectDelimiter:'', name: 'ServiceName', quoteValue: false, saveJOSNParameterToFile: false, type: 'PT_CHECKBOX', value: 'All,sample-app,service-one,service-two', visibleItemCount: 3)
 		choice (name: 'Environment', choices: ['dev', 'itg'], description: 'Environment to Deploy')
 	}
