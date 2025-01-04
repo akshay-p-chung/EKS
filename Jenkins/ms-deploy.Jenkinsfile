@@ -58,15 +58,18 @@ pipeline {
 			steps {
 				dir("${env.C_DIR}") {
 					script {
-						sh"""
+						sh """
 							kubectl config use-context arn:aws:eks:us-east-1:${AWS_ACNT_ID}:cluster/eks-${Environment}
-							if [ "${ServiceName}" == "All" ]
-							then
+                    
+							if [ "${ServiceName}" = "All" ]; then
 								ServiceName="sample-app,service-one,service-two"
 							fi
-							for i in ${ServiceName}
-							do
-								helm upgrade --install $i helm-config/$i --set image.repository=${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/project/$i --set image.tag=${BUILD_TAG} -f helm-config/values.yaml
+                    
+							for i in $(echo ${ServiceName} | tr ',' ' '); do
+								helm upgrade --install $i helm-config/$i \
+									--set image.repository=${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/project/$i \
+									--set image.tag=${BUILD_TAG} \
+									-f helm-config/values.yaml
 							done
 						"""
 					}
