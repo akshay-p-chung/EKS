@@ -41,7 +41,7 @@ pipeline {
 							then
 								ServiceName="sample-app,service-one,service-two"
 							fi
-							for $i in $ServiceName
+							for i in ${ServiceName}
 							do
 								aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com
 								docker build -t $i $i/
@@ -59,12 +59,12 @@ pipeline {
 				dir("${env.C_DIR}") {
 					script {
 						sh"""
-							kubectl config use-context arn:aws:eks:us-east-1:$(AWS_ACNT_ID):cluter/eks-${Environment}
-							if [ "$ServiceName" == "All" ]
+							kubectl config use-context arn:aws:eks:us-east-1:${AWS_ACNT_ID}:cluster/eks-${Environment}
+							if [ "${ServiceName}" == "All" ]
 							then
 								ServiceName="sample-app,service-one,service-two"
 							fi
-							for $i in $ServiceName
+							for i in ${ServiceName}
 							do
 								helm upgrade --install $i helm-config/$i --set image.repository=${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/project/$i --set image.tag=${BUILD_TAG} -f helm-config/values.yaml
 							done
