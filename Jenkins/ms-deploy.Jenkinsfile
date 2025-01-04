@@ -42,7 +42,7 @@ pipeline {
 							then
 								ServiceName="sample-app,service-one,service-two"
 							fi
-							for i in ${ServiceName}
+							for $i in ${ServiceName}
 							do
 								aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com
 								docker build -t $i $i/
