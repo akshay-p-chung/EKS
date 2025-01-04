@@ -79,7 +79,7 @@ pipeline {
 			dir("${env.C_DIR}") {
 				script {
 					echo "$docker_img_created"
-						if ("$docker_img_created" 'true') {
+						if (docker_img_created == 'true') {
 							sh"""
 							ls -ltr
 								if [ $ServiceName == "All" ]
