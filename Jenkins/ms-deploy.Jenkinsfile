@@ -66,10 +66,10 @@ pipeline {
 							fi
                     
 							for i in \$(echo ${ServiceName} | tr ',' ' '); do
-								helm upgrade --install \$i helm-config/\$i \
+								helm upgrade --install \$i ./helm-config/\$i \
 									--set image.repository=\${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/project/\$i \
 									--set image.tag=\${BUILD_TAG} \
-									-f helm-config/values.yaml
+									-f ./helm-config/values.yaml
 							done
 						"""
 					}
