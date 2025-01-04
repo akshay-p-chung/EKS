@@ -27,7 +27,7 @@ pipeline {
 			steps{
 				dir("$env.C_DIR") {
 					script{
-						git branch: '${BRANCH}', url: 'https://github.com/akshay-p-chung/EKS.git'
+						git branch: '${ServiceBranch}', url: 'https://github.com/akshay-p-chung/EKS.git'
 					}
 				}
 			}
