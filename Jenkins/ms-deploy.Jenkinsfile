@@ -38,7 +38,7 @@ pipeline {
 					script {
 						sh """
 							echo ${ServiceName}
-							if [ "${ServiceName}" = "All" ]; then
+							if [ "${ServiceName}" == "All" ]; then
 								ServiceName="sample-app,service-one,service-two"
 							fi
 
