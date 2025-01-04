@@ -56,7 +56,7 @@ pipeline {
 		}
 		stage('Helm Deployment') {
 			steps {
-				dir("\${env.C_DIR}") {
+				dir("${env.C_DIR}") {
 					script {
 						sh """
 							kubectl config use-context arn:aws:eks:us-east-1:\${AWS_ACNT_ID}:cluster/eks-\${Environment}
