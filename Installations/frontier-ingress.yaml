@@ -9,39 +9,15 @@ metadata:
           if ($args ~ "^(?=.*(^|&)store=gnpt(&|$)).*") {
             rewrite ^/v2/search /gnpt/v3/search redirect;
           }
-
-          if ($args ~ "(^(?=.*(^|&)store=promotions(&/$).*))(^(?=.*(^|&)promotions=true(&|$)).*)") {
-            rewrite ^/v2/search /promotion/v3/search redirect;
-          }
-
-          if ($args ~ "(.*((^|&)booleanSearch=true(&|$)).*) ") { 
-            rewrite ^/v2/search /content/v3/search redirect;
-          }
-
-          if ($args ~ "(?=.*(^|&)(\bq=\s*[^\s&\*]+))(?=.*(^|&)(\bcompoundSearch=true\b)).*") {
-            rewrite ^/v2/search /compound/v3/search redirect;
-          }
-
-          if ($args ~ "(?=.*(^|&)store=."(tmstore|tmsplatformstore|tmsfuturestore)).*") {
-            rewrite ^/v2/search /product/v3/search redirect;
-          }
-
-          rewrite ^/v2/search /content/v3/search redirect;
-
 spec:
     ingressClassName: nginx
-    tls:
-        - hosts:
-            - kaas-udp-ms.hpkaasitg.com
-          secretName: no-secret-required
     rules:
-        - host: kaas-udp-ms.hpkaasitg.com
-          http:
+        http:
             paths:
             - pathType: ImplementationSpecific
               path: /v2/search
               backend:
-                service:
-                    name: http-backend-service
-                    port:
-                        number: 80
+				service:
+				  name: gnpt-service  # Update as per the service
+				  port:
+					number: 80
