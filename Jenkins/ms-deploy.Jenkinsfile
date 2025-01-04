@@ -36,17 +36,17 @@ pipeline {
 			steps {
 				dir("${env.C_DIR}") {
 					script {
-						sh"""
+						sh """
 							echo ${ServiceName}
-							if [ "$ServiceName" == "All" ]
-							then
+							if [ "${ServiceName}" = "All" ]; then
 								ServiceName="sample-app,service-one,service-two"
 							fi
-							do
+
+							for i in $(echo ${ServiceName} | tr ',' ' '); do
 								aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com
-								docker build -t ${ServiceName} ${ServiceName}/
-								docker tag ${ServiceName}:latest ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com
-								docker push ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/kaas-dev/${ServiceName}:${BUILD_TAG}
+								docker build -t $i $i/
+								docker tag $i:latest ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/kaas-dev/$i:${BUILD_TAG}
+								docker push ${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/kaas-dev/$i:${BUILD_TAG}
 							done
 						"""
 						env.docker_img_created = true
