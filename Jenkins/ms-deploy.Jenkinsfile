@@ -43,7 +43,19 @@ pipeline {
 							fi
 
 							for i in \$(echo \${ServiceName} | tr ',' ' '); do
+							
+								# Check if the ECR repository exists
+								if ! aws ecr describe-repositories --repository-names project/\$i --region us-east-1 > /dev/null 2>&1; then
+									echo "Repository for \$i does not exist. Creating repository."
+									aws ecr create-repository --repository-name project/\$i --region us-east-1
+								else
+									echo "Repository for \$i already exists."
+								fi
+                        
+								# Log in to ECR
 								aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin \${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+								
+								# Build, tag, and push the Docker image
 								docker build -t \$i \$i/
 								docker tag \$i:latest \${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/project/\$i:\${BUILD_TAG}
 								docker push \${AWS_ACNT_ID}.dkr.ecr.us-east-1.amazonaws.com/project/\$i:\${BUILD_TAG}
