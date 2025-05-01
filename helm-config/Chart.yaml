@@ -1,4 +1,0 @@
-apiVersion: v2
-name: gnpt-service
-description: A Helm chart for GNPT Service
-version: 0.1.0
